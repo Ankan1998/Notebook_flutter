@@ -10,6 +10,13 @@ class NoteList extends StatefulWidget {
 
 class _NoteListState extends State<NoteList> {
   int count = 0;
+
+  void push_nav(String title) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return NoteDetail(title);
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,15 +29,13 @@ class _NoteListState extends State<NoteList> {
       ),
       body: getNoteListView(),
       floatingActionButton: FloatingActionButton(
-        heroTag: null,
-        onPressed: () {
-          //debugPrint('FAB');
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return NoteDetail();
-          }));
-        },
-        tooltip: 'Add Note',
-        child: Icon(Icons.add_box)),
+          heroTag: null,
+          onPressed: () {
+            push_nav("Add Note");
+            //debugPrint('FAB');
+          },
+          tooltip: 'Add Note',
+          child: Icon(Icons.add_box)),
     );
   }
 
@@ -58,7 +63,8 @@ class _NoteListState extends State<NoteList> {
                   color: Colors.grey,
                 ),
                 onTap: () {
-                  debugPrint("ds");
+                  push_nav("Edit Note");
+                  //debugPrint("ds");
                 },
               ));
         });

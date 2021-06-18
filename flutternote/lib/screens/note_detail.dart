@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class NoteDetail extends StatefulWidget {
-  const NoteDetail({Key? key}) : super(key: key);
+  //const NoteDetail(String title, {Key? key}) : super(key: key);
+  String barTitle;
+  NoteDetail(this.barTitle);
 
   @override
   _NoteDetailState createState() => _NoteDetailState();
@@ -19,7 +21,7 @@ class _NoteDetailState extends State<NoteDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Edit Notes',
+          widget.barTitle,
         ),
       ),
       body: Padding(
@@ -106,9 +108,9 @@ class _NoteDetailState extends State<NoteDetail> {
                         label: Text('Save'),
                       ),
                     ),
-
-                    Container(width: 5.0,),
-
+                    Container(
+                      width: 5.0,
+                    ),
                     Expanded(
                       child: FloatingActionButton.extended(
                         heroTag: "btn2",
@@ -134,3 +136,5 @@ class _NoteDetailState extends State<NoteDetail> {
     );
   }
 }
+
+//moveToLastScreen method
