@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutternote/screens/note_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'NoteSet',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.amber,
       ),
       home: NoteList(),
     );
@@ -19,18 +20,3 @@ class MyApp extends StatelessWidget {
 }
 
 
-class NoteList extends StatefulWidget {
-  const NoteList({ Key? key }) : super(key: key);
-
-  @override
-  _NoteListState createState() => _NoteListState();
-}
-
-class _NoteListState extends State<NoteList> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      
-    );
-  }
-}
