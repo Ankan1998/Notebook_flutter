@@ -91,6 +91,7 @@ class _NoteDetailState extends State<NoteDetail> {
                   children: <Widget>[
                     Expanded(
                       child: FloatingActionButton.extended(
+                        heroTag: "btn1",
                         onPressed: () {
                           setState(() {
                             debugPrint('Save clicked');
@@ -110,6 +111,7 @@ class _NoteDetailState extends State<NoteDetail> {
 
                     Expanded(
                       child: FloatingActionButton.extended(
+                        heroTag: "btn2",
                         onPressed: () {
                           setState(() {
                             debugPrint('delete clicked');
