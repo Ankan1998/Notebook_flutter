@@ -34,7 +34,7 @@ class Note {
     this._date = newDate;
   }
 
-  // Convert note object to map object
+  // Convert note object to map object [for storing in DB]
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -48,5 +48,14 @@ class Note {
     map["date"] = _date;
 
     return map;
+  }
+
+  // Convert map object back to note object [to get data from db and use in dart]
+  Note.fromMapObject(Map<String, dynamic> map) {
+    this._id = map['id'];
+    this._title = map['title'];
+    this._description = map['description'];
+    this._priority = map['priority'];
+    this._date = map['date'];
   }
 }
