@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class NoteDetail extends StatefulWidget {
   //const NoteDetail(String title, {Key? key}) : super(key: key);
   String barTitle;
@@ -14,11 +15,16 @@ class _NoteDetailState extends State<NoteDetail> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
+  void moveToMainScreen() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     TextStyle? textStyle = Theme.of(context).textTheme.headline5;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           widget.barTitle,
@@ -52,10 +58,11 @@ class _NoteDetailState extends State<NoteDetail> {
                 bottom: 15.0,
               ),
               child: TextField(
+                autofocus: false,
                 controller: titleController,
                 style: textStyle,
                 onChanged: (value) {
-                  debugPrint("Something title text field");
+                  //debugPrint("Something title text field");
                 },
                 decoration: InputDecoration(
                     labelText: 'Title',
@@ -71,13 +78,15 @@ class _NoteDetailState extends State<NoteDetail> {
                 bottom: 15.0,
               ),
               child: TextField(
-                controller: titleController,
+                keyboardType: TextInputType.multiline,
+                autofocus: false,
+                controller: descriptionController,
                 style: textStyle,
                 onChanged: (value) {
                   debugPrint("Something title text field");
                 },
                 decoration: InputDecoration(
-                    labelText: 'Title',
+                    labelText: 'Description',
                     labelStyle: textStyle,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0))),
@@ -95,6 +104,7 @@ class _NoteDetailState extends State<NoteDetail> {
                       child: FloatingActionButton.extended(
                         heroTag: "btn1",
                         onPressed: () {
+                          //moveToMainScreen();
                           setState(() {
                             debugPrint('Save clicked');
                           });
@@ -115,6 +125,7 @@ class _NoteDetailState extends State<NoteDetail> {
                       child: FloatingActionButton.extended(
                         heroTag: "btn2",
                         onPressed: () {
+                          //moveToMainScreen();
                           setState(() {
                             debugPrint('delete clicked');
                           });
@@ -136,5 +147,3 @@ class _NoteDetailState extends State<NoteDetail> {
     );
   }
 }
-
-//moveToLastScreen method
