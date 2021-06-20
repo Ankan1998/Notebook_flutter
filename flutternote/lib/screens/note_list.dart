@@ -78,4 +78,41 @@ class _NoteListState extends State<NoteList> {
               ));
         });
   }
+
+    // Returns the priority color
+	Color getPriorityColor(int priority) {
+		switch (priority) {
+			case 1:
+				return Colors.red;
+				break;
+			case 2:
+				return Colors.green;
+				break;
+      case 3:
+				return Colors.yellow;
+				break;
+
+			default:
+				return Colors.green;
+		}
+	}
+
+  // Returns the priority icon
+	Icon getPriorityIcon(int priority) {
+		switch (priority) {
+			case 1:
+				return Icon(Icons.arrow_upward);
+				break;
+			case 2:
+				return Icon(Icons.arrow_right);
+				break;
+      case 3:
+				return Icon(Icons.arrow_downward);
+				break;
+
+			default:
+				return Icon(Icons.arrow_right);
+		}
+	}
+
 }
