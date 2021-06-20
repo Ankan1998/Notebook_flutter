@@ -70,6 +70,13 @@ class DatabaseHelper {
 		return result;
 	}
 
+  // Update Operation: Update a Note object and save it to database
+	Future<int> updateNote(Note note) async {
+		var db = await this.database;
+		var result = await db.update(noteTable, note.toMap(), where: '$colId = ?', whereArgs: [note.id]);
+		return result;
+	}
+
 }
 
 
