@@ -27,7 +27,9 @@ class Note {
   }
 
   set priority(int newPriority) {
-    this._priority = newPriority;
+    if (newPriority >= 1 && newPriority <= 3) {
+      this._priority = newPriority;
+    }
   }
 
   set date(String newDate) {
