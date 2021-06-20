@@ -1,3 +1,4 @@
+
 class Note {
   late int _id;
   late String _title;

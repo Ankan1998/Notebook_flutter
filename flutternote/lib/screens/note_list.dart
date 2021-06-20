@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/note_detail.dart';
+import 'package:flutternote/utils/database_helper.dart';
 
 class NoteList extends StatefulWidget {
   //const NoteList({ Key? key }) : super(key: key);
@@ -9,6 +11,8 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
+  late List<Note> noteList;
   int count = 0;
 
   void push_nav(String title) {
@@ -19,6 +23,11 @@ class _NoteListState extends State<NoteList> {
 
   @override
   Widget build(BuildContext context) {
+    if (noteList == null) {
+     
+      noteList = <Note>[];
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Center(

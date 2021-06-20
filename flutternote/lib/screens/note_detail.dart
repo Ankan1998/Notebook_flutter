@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutternote/screens/note_detail.dart';
 
 // ignore: must_be_immutable
 class NoteDetail extends StatefulWidget {
