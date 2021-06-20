@@ -24,7 +24,6 @@ class _NoteListState extends State<NoteList> {
   @override
   Widget build(BuildContext context) {
     if (noteList == null) {
-     
       noteList = <Note>[];
     }
 
@@ -79,40 +78,55 @@ class _NoteListState extends State<NoteList> {
         });
   }
 
-    // Returns the priority color
-	Color getPriorityColor(int priority) {
-		switch (priority) {
-			case 1:
-				return Colors.red;
-				break;
-			case 2:
-				return Colors.green;
-				break;
+  // Returns the priority color
+  Color getPriorityColor(int priority) {
+    switch (priority) {
+      case 1:
+        return Colors.red;
+        break;
+      case 2:
+        return Colors.green;
+        break;
       case 3:
-				return Colors.yellow;
-				break;
+        return Colors.yellow;
+        break;
 
-			default:
-				return Colors.green;
-		}
-	}
+      default:
+        return Colors.green;
+    }
+  }
 
   // Returns the priority icon
-	Icon getPriorityIcon(int priority) {
-		switch (priority) {
-			case 1:
-				return Icon(Icons.arrow_upward);
-				break;
-			case 2:
-				return Icon(Icons.arrow_right);
-				break;
+  Icon getPriorityIcon(int priority) {
+    switch (priority) {
+      case 1:
+        return Icon(Icons.arrow_upward);
+        break;
+      case 2:
+        return Icon(Icons.arrow_right);
+        break;
       case 3:
-				return Icon(Icons.arrow_downward);
-				break;
+        return Icon(Icons.arrow_downward);
+        break;
 
-			default:
-				return Icon(Icons.arrow_right);
-		}
+      default:
+        return Icon(Icons.arrow_right);
+    }
+  }
+
+  void _delete(BuildContext context, Note note) async {
+    int result = await databaseHelper.deleteNote(note.id);
+    if (result != 0) {
+      _showSnackBar(context, 'Note Deleted Successfully');
+      //TODO update list view
+    }
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+
+		final snackBar = SnackBar(content: Text(message));
+		ScaffoldMessenger.of(context).showSnackBar(snackBar);
 	}
+
 
 }
