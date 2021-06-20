@@ -58,17 +58,23 @@ class _NoteListState extends State<NoteList> {
               elevation: 2.0,
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: Colors.yellow,
-                  child: Icon(Icons.keyboard_arrow_right_outlined),
+                  backgroundColor:
+                      getPriorityColor(this.noteList[position].priority),
+                  child: getPriorityIcon(this.noteList[position].priority),
                 ),
                 title: Text(
-                  'Dummy Title',
+                  this.noteList[position].title,
                   style: titleStyle,
                 ),
-                subtitle: Text('Dummy Date'),
-                trailing: Icon(
-                  Icons.delete,
-                  color: Colors.grey,
+                subtitle: Text(this.noteList[position].date),
+                trailing: GestureDetector(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.grey,
+                  ),
+                  onTap: () {
+                    _delete(context, noteList[position]);
+                  },
                 ),
                 onTap: () {
                   push_nav("Edit Note");
@@ -123,10 +129,7 @@ class _NoteListState extends State<NoteList> {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-
-		final snackBar = SnackBar(content: Text(message));
-		ScaffoldMessenger.of(context).showSnackBar(snackBar);
-	}
-
-
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
