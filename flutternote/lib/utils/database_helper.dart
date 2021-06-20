@@ -53,6 +53,16 @@ class DatabaseHelper {
 	}
 
 
+
+  // Fetch Operation: Get all note objects from database
+	Future<List<Map<String, dynamic>>> getNoteMapList() async {
+		Database db = await this.database;
+
+		//var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
+		var result = await db.query(noteTable, orderBy: '$colPriority ASC');
+		return result;
+	}
+
 }
 
 
