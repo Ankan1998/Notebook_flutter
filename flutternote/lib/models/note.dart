@@ -1,10 +1,10 @@
 
 class Note {
-  late int _id;
-  late String _title;
-  late String _description;
-  late String _date;
-  late int _priority;
+  int _id;
+  String _title;
+  String _description;
+  String _date;
+  int _priority;
 
   Note(this._date, this._id, this._priority, this._title, this._description);
 

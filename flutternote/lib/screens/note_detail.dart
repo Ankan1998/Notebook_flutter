@@ -22,7 +22,7 @@ class _NoteDetailState extends State<NoteDetail> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle? textStyle = Theme.of(context).textTheme.headline5;
+    TextStyle textStyle = Theme.of(context).textTheme.headline5;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,

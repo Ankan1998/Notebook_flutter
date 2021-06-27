@@ -6,10 +6,9 @@ import 'package:flutternote/models/note.dart';
 
 class DatabaseHelper {
   // ignore: unused_field
-  static late DatabaseHelper
-      _databaseHelper; // Singleton DatabaseHelper--> iT will only instansciate once
+  static DatabaseHelper _databaseHelper; // Singleton DatabaseHelper--> iT will only instansciate once
 
-  static late Database _database;                // Singleton Database    
+  static Database _database;                // Singleton Database    
   
   String noteTable = 'note_table';
 	String colId = 'id';
@@ -85,10 +84,10 @@ class DatabaseHelper {
 	}
 
   // Get number of Note objects in database
-	Future<int?> getCount() async {
+	Future<int> getCount() async {
 		Database db = await this.database;
 		List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $noteTable');
-		int? result = Sqflite.firstIntValue(x);
+		int result = Sqflite.firstIntValue(x);
 		return result;
 	}
 

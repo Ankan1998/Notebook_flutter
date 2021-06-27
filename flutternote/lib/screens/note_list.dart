@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/note_detail.dart';
 import 'package:flutternote/utils/database_helper.dart';
+import 'package:sqflite/sqflite.dart';
 
 class NoteList extends StatefulWidget {
   //const NoteList({ Key? key }) : super(key: key);
@@ -12,7 +13,7 @@ class NoteList extends StatefulWidget {
 
 class _NoteListState extends State<NoteList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  late List<Note> noteList;
+  List<Note> noteList;
   int count = 0;
 
   void push_nav(String title) {
@@ -21,10 +22,24 @@ class _NoteListState extends State<NoteList> {
     }));
   }
 
+  void updateListView() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+      noteListFuture.then((noteList) {
+        setState(() {
+          this.noteList = noteList;
+          this.count = noteList.length;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (noteList == null) {
       noteList = <Note>[];
+      updateListView();
     }
 
     return Scaffold(
@@ -48,7 +63,7 @@ class _NoteListState extends State<NoteList> {
   }
 
   ListView getNoteListView() {
-    TextStyle? titleStyle = Theme.of(context).textTheme.subtitle1;
+    TextStyle titleStyle = Theme.of(context).textTheme.subtitle1;
 
     return ListView.builder(
         itemCount: count,
@@ -124,7 +139,7 @@ class _NoteListState extends State<NoteList> {
     int result = await databaseHelper.deleteNote(note.id);
     if (result != 0) {
       _showSnackBar(context, 'Note Deleted Successfully');
-      //TODO update list view
+      updateListView();
     }
   }
 
