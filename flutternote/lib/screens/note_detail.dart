@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/note_detail.dart';
 import 'package:flutternote/utils/database_helper.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class NoteDetail extends StatefulWidget {
@@ -20,6 +21,7 @@ class _NoteDetailState extends State<NoteDetail> {
   TextEditingController descriptionController = TextEditingController();
   String barTitle;
   Note note;
+
   _NoteDetailState(this.note, this.barTitle);
   DatabaseHelper helper = DatabaseHelper();
 
@@ -55,6 +57,54 @@ class _NoteDetailState extends State<NoteDetail> {
         break;
     }
     return priority;
+  }
+
+  void updateTitle() {
+    note.title = titleController.text;
+  }
+
+  void updateDescription() {
+    note.description = descriptionController.text;
+  }
+
+  void _save() async {
+    moveToMainScreen();
+    note.date = DateFormat.yMMMd().format(DateTime.now());
+
+    int result;
+    if (note.id != null) {
+      result = await helper.updateNote(note);
+    } else {
+      result = await helper.insertNote(note);
+    }
+
+    if (result != 0) {
+      _showAlert('Status', 'Note Saved Successfully');
+    } else {
+      _showAlert('Status', 'Issue raised while saving Note');
+    }
+  }
+
+  void _showAlert(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
+
+  void _delete() async {
+    moveToMainScreen();
+    if (note.id == null) {
+      _showAlert('Status', 'No Note deleted');
+      return;
+    }
+    int result = await helper.deleteNote(note.id);
+    if (result != 0) {
+      _showAlert('Status', 'Note Deleted Successfully');
+    } else {
+      _showAlert('Status', 'Issue raised while Deleting Note');
+    }
   }
 
   @override
@@ -103,6 +153,7 @@ class _NoteDetailState extends State<NoteDetail> {
                 style: textStyle,
                 onChanged: (value) {
                   //debugPrint("Something title text field");
+                  updateTitle();
                 },
                 decoration: InputDecoration(
                     labelText: 'Title',
@@ -123,7 +174,8 @@ class _NoteDetailState extends State<NoteDetail> {
                 controller: descriptionController,
                 style: textStyle,
                 onChanged: (value) {
-                  debugPrint("Something title text field");
+                  //debugPrint("Something title text field");
+                  updateDescription();
                 },
                 decoration: InputDecoration(
                     labelText: 'Description',
@@ -147,6 +199,7 @@ class _NoteDetailState extends State<NoteDetail> {
                           //moveToMainScreen();
                           setState(() {
                             debugPrint('Save clicked');
+                            _save();
                           });
                         },
                         tooltip: 'Save Note',
@@ -168,6 +221,7 @@ class _NoteDetailState extends State<NoteDetail> {
                           //moveToMainScreen();
                           setState(() {
                             debugPrint('delete clicked');
+                            _delete();
                           });
                         },
                         tooltip: 'Delete',
