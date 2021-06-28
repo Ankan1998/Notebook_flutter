@@ -26,7 +26,7 @@ class _NoteDetailState extends State<NoteDetail> {
   DatabaseHelper helper = DatabaseHelper();
 
   void moveToMainScreen() {
-    Navigator.pop(context);
+    Navigator.pop(context, true);
   }
 
   void updateIntPriority(String value) {

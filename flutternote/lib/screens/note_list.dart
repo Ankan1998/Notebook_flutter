@@ -16,10 +16,14 @@ class _NoteListState extends State<NoteList> {
   List<Note> noteList;
   int count = 0;
 
-  void push_nav(Note note, String title) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+  void push_nav(Note note, String title) async {
+    bool result =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return NoteDetail(note, title);
     }));
+    if (result == true) {
+      updateListView();
+    }
   }
 
   void updateListView() {
@@ -54,7 +58,7 @@ class _NoteListState extends State<NoteList> {
       floatingActionButton: FloatingActionButton(
           heroTag: null,
           onPressed: () {
-            push_nav(Note('','',2), "Add Note");
+            push_nav(Note('', '', 2), "Add Note");
             //debugPrint('FAB');
           },
           tooltip: 'Add Note',
@@ -92,7 +96,7 @@ class _NoteListState extends State<NoteList> {
                   },
                 ),
                 onTap: () {
-                  push_nav(this.noteList[position],"Edit Note");
+                  push_nav(this.noteList[position], "Edit Note");
                   //debugPrint("ds");
                 },
               ));
@@ -147,6 +151,4 @@ class _NoteListState extends State<NoteList> {
     final snackBar = SnackBar(content: Text(message));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
-
 }
