@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "378098123042",
+    "project_id": "notekeeper-fe988",
+    "storage_bucket": "notekeeper-fe988.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378098123042:android:8fc271dfd6a7faee03257b",
+        "android_client_info": {
+          "package_name": "com.example.flutternote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378098123042-7hgt0vgtmt35v5h4e7gtc1f1h2slince.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutternote",
+            "certificate_hash": "0f444561d4d82bedfe0220a4f6f2f5e3282f4486"
+          }
+        },
+        {
+          "client_id": "378098123042-f8sdpanmi6jmbv86di9mbifm3q80bbl1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7RoFegJnGA73Z4aHQjxNs7c6nufbjqdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378098123042-f8sdpanmi6jmbv86di9mbifm3q80bbl1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
