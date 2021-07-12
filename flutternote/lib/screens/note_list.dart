@@ -1,106 +1,167 @@
 import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/note_detail.dart';
-import 'package:flutternote/utils/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:flutternote/services.dart/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class NoteList extends StatefulWidget {
   //const NoteList({ Key? key }) : super(key: key);
+  static final String routeName = "/home";
 
   @override
   _NoteListState createState() => _NoteListState();
 }
 
 class _NoteListState extends State<NoteList> {
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Note> noteList;
-  int count = 0;
+  FireStore_srv srv_obj = new FireStore_srv();
 
-  void push_nav(Note note, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NoteDetail(note, title);
-    }));
-    if (result == true) {
-      updateListView();
-    }
-  }
+  CollectionReference ref = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser.uid)
+      .collection('reminder');
 
-  void updateListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
-      noteListFuture.then((noteList) {
-        setState(() {
-          this.noteList = noteList;
-          this.count = noteList.length;
-        });
-      });
-    });
-  }
+  // void push_nav(Note note, String title) async {
+  //   bool result =
+  //       await Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //     return NoteDetail(note, title);
+  //   }));
+  //   if (result == true) {
+  //     updateListView();
+  //   }
+  // }
+
+  // void updateListView() {
+  //   final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+  //   dbFuture.then((database) {
+  //     Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+  //     noteListFuture.then((noteList) {
+  //       setState(() {
+  //         this.noteList = noteList;
+  //         this.count = noteList.length;
+  //       });
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if (noteList == null) {
-      noteList = <Note>[];
-      updateListView();
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Notes',
-          ),
-        ),
-      ),
-      body: getNoteListView(),
-      floatingActionButton: FloatingActionButton(
-          heroTag: null,
-          onPressed: () {
-            push_nav(Note('', '', 2), "Add Note");
-            //debugPrint('FAB');
-          },
-          tooltip: 'Add Note',
-          child: Icon(Icons.add_box)),
-    );
-  }
-
-  ListView getNoteListView() {
-    TextStyle titleStyle = Theme.of(context).textTheme.subtitle1;
-
-    return ListView.builder(
-        itemCount: count,
-        itemBuilder: (BuildContext context, int position) {
-          return Card(
-              color: Colors.white,
-              elevation: 2.0,
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor:
-                      getPriorityColor(this.noteList[position].priority),
-                  child: getPriorityIcon(this.noteList[position].priority),
+    var refx = ref.orderBy("datetime", descending: false);
+    return FutureBuilder<QuerySnapshot>(
+      future: refx.get(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.docs.length == 0) {
+            return Center(
+                child: Text("No Reminders",
+                    style: TextStyle(
+                      color: Colors.black45,
+                    )));
+          }
+          return StickyGroupedListView<QueryDocumentSnapshot, DateTime>(
+            physics: AlwaysScrollableScrollPhysics(),
+            elements: snapshot.data.docs,
+            order: StickyGroupedListOrder.DESC,
+            //itemCount: snapshot.data.docs.length,
+            groupBy: (QueryDocumentSnapshot s) => DateTime(DateTime.parse(s['datetime']).year,DateTime.parse(s['datetime']).month,DateTime.parse(s['datetime']).day),
+            groupComparator: (DateTime value1, DateTime value2) =>
+              value2.compareTo(value1),
+            itemComparator: (QueryDocumentSnapshot s1, QueryDocumentSnapshot s2) =>
+              s1['datetime'].compareTo(s2['datetime']),
+            groupSeparatorBuilder: (QueryDocumentSnapshot s) => Container(
+              height: 50,
+              child: Container(
+                width: 120,
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  // border: Border.all(
+                  //   color: Colors.blue[300],
+                  // ),
+                  //borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 ),
-                title: Text(
-                  this.noteList[position].title,
-                  style: titleStyle,
-                ),
-                subtitle: Text(this.noteList[position].date),
-                trailing: GestureDetector(
-                  child: Icon(
-                    Icons.delete,
-                    color: Colors.grey,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                  child: Text(
+                    //'${DateTime.parse(s['datetime']).day}. ${DateTime.parse(s['datetime']).month}, ${DateTime.parse(s['datetime']).year}',
+                    '${DateFormat.yMMMd().format(DateTime(DateTime.parse(s['datetime']).year,DateTime.parse(s['datetime']).month,DateTime.parse(s['datetime']).day))}'
                   ),
-                  onTap: () {
-                    _delete(context, noteList[position]);
-                  },
                 ),
-                onTap: () {
-                  push_nav(this.noteList[position], "Edit Note");
-                  //debugPrint("ds");
-                },
-              ));
-        });
+              ),
+            ),
+            itemBuilder: (context, QueryDocumentSnapshot s) {
+              Map data = s.data();
+              DateTime mydateTime = DateTime.parse(data['datetime']);
+              String formattedTime =
+                  DateFormat.yMMMd().add_jm().format(mydateTime);
+
+              return Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actionExtentRatio: 0.25,
+                child: Card(
+                  elevation: 1,
+                  //clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(1.0)),
+                  child: ListTile(                   
+                    title: Text(
+                      "${data['title']}",
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          fontFamily: 'Roboto',
+                          color: Colors.black45),
+                    ),
+                    subtitle: Text("${data['des']}"),
+                    trailing: Text(formattedTime)
+                  ),
+                ),
+                secondaryActions: <Widget>[
+                  IconSlideAction(
+                    caption: 'Done',
+                    color: Colors.green,
+                    icon: Icons.check,
+                    onTap: () {
+                      setState(() {
+                        srv_obj.add_log(data);
+                        srv_obj.deleteReminder(
+                            s.reference);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('${data['title']} is Logged')));
+                        print("Done");
+                      });
+                    },
+                  ),
+                  IconSlideAction(
+                    caption: 'Delete',
+                    color: Colors.red,
+                    icon: Icons.delete_forever,
+                    onTap: () {
+                      setState(() {
+                        
+                        srv_obj.deleteReminder(
+                            s.reference);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('${data['title']} is Deleted')));
+                        print("Done");
+                      });
+                      // setState(() {
+
+                      // });
+                    },
+                  ),
+                ],
+              );
+            }
+          );
+        } else {
+          return Center(
+            child: Text("loading"),
+          );
+        }
+      },
+    );
   }
 
   // Returns the priority color
@@ -139,16 +200,6 @@ class _NoteListState extends State<NoteList> {
     }
   }
 
-  void _delete(BuildContext context, Note note) async {
-    int result = await databaseHelper.deleteNote(note.id);
-    if (result != 0) {
-      _showSnackBar(context, 'Note Deleted Successfully');
-      updateListView();
-    }
-  }
 
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+
 }
