@@ -27,7 +27,7 @@ void main() async {
         NoteApp.routeName: (ctx) => NoteApp(),
         NoteList.routeName: (ctx) => NoteList(),
         // AddReminder.routeName: (ctx) => AddReminder(),
-        // LoginPage.routeName: (ctx) => LoginPage(),
+        //LoginPage.routeName: (ctx) => LoginPage(),
         
         //SettingPage.routeName: (ctx) => SettingPage(),
         //LocalizedBird.routeName: (ctx) => LocalizedBird()
