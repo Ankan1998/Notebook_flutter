@@ -5,6 +5,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutternote/screens/note_list.dart';
+import 'package:flutternote/widgets/drawer.dart';
 
 class NoteApp extends StatefulWidget {
   //const DueApp({ Key? key }) : super(key: key);
@@ -44,14 +45,14 @@ class _NoteAppState extends State<NoteApp> {
       ),
 
       extendBodyBehindAppBar: false,
-      // drawer: Theme(
-      //   data: Theme.of(context).copyWith(
-      //     canvasColor: Colors.grey[900],
-      //   ),
+      drawer: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor: Colors.grey[900],
+        ),
 
-      //   //This will change the drawer background to blue.
-      //   child: DueDrawer(),
-      // ),
+        //This will change the drawer background to blue.
+        child: NoteDrawer(),
+      ),
       body: NoteList(),
       backgroundColor: Colors.grey[300],
     );
