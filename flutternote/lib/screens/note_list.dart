@@ -10,7 +10,7 @@ import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class NoteList extends StatefulWidget {
   //const NoteList({ Key? key }) : super(key: key);
-  static final String routeName = "/home";
+  static final String routeName = "/notelist";
 
   @override
   _NoteListState createState() => _NoteListState();
