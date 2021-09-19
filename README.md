@@ -1,5 +1,5 @@
 # Notebook_flutter
-This repo is to practice flutter app which requires Database
+This is a notekeeping app made using flutter and no-sql database hive is used.
 
 <h2>Demo Image</h2>
 
