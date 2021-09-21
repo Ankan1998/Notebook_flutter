@@ -3,16 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MyTheme {
   MyTheme._();
-  static Color kPrimaryColor = Color(0xff542BAB);
-  static Color kPrimaryColorHeader = Color(0xff2B9BAB);
-  static Color kplot = Color(0xffDBEDC5);
-  static Color kcast = Color(0xffC2F2EF);
-  static Color kyear = Color(0xff2B9BAB);
-  static Color kratingbar = Color(0xff5D3AC2);
+  static Color kPrimaryColor = Color(0xffC1D2E5);
+  static Color backgroundColor = Color(0xffD5E9ED);
+
 
   static final TextStyle kAppTitle = TextStyle(
-    color: Color(0xffC2F2EF),
-    fontFamily: GoogleFonts.revalia(fontSize: 28).fontFamily
+    color: Color(0xff566FA1),
+    fontSize: 32,
+    fontWeight: FontWeight.w600,
+    fontFamily: GoogleFonts.oxygenMono().fontFamily
   );
   
   
