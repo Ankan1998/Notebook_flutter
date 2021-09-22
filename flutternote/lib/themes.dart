@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MyTheme {
   MyTheme._();
-  static Color kPrimaryColor = Color(0xffC1D2E5);
+  static Color kPrimaryColor = Color(0xffB8B9D1);
   static Color backgroundColor = Color(0xffD5E9ED);
 
 
   static final TextStyle kAppTitle = TextStyle(
     color: Color(0xff566FA1),
     fontSize: 32,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w400,
     fontFamily: GoogleFonts.oxygenMono().fontFamily
   );
   
