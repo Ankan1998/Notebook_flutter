@@ -17,45 +17,65 @@ class _NoteListState extends State<NoteList> {
       backgroundColor: MyTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: Center(
-          child: Text('Notie', style: MyTheme.kAppTitle),
-        ),
+        title: Center(child: Text('Notie', style: MyTheme.kAppTitle)),
+        toolbarHeight: 70,
+
       ),
       body: Padding(
         padding: const EdgeInsets.only(
           left: 15.0,
           top: 25,
           right: 15,
+          bottom: 15
         ),
         child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(height: 10.0);
           },
-          itemCount: 4,
+          itemCount: 30,
           itemBuilder: (context, index) {
-            return ClipPath(
-              child: Container(
-                child: Center(
-                  child: ListTile(
-                    title: Text("$index"),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(onPressed: () {}, icon: Icon(Icons.refresh)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-                      ],
+            return Dismissible(
+              key: UniqueKey(),
+              onDismissed: (DismissDirection direction){
+                setState(() {
+                  
+                });
+              },
+              background: SizedBox(height:0),
+              secondaryBackground: Container(
+                child:Center(child: Text("Delete"),),
+                color: Colors.red[300].withOpacity(0.7),
+              ),
+              child: ClipPath(
+                child: Container(
+                  child: Center(
+                    child: ListTile(
+                      title: Text("$index"),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () {}, 
+                            icon: Icon(
+                              Icons.edit,
+                              color: Color(0xff6962BA),
+                              size: 30,
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  height: 80,
+                  decoration: BoxDecoration(
+                      color: Color(0x40262502),
+                      border: Border(
+                          left: BorderSide(color: Colors.green, width: 20))),
                 ),
-                height: 70,
-                decoration: BoxDecoration(
-                    color: Color(0x40262502),
-                    border: Border(
-                        left: BorderSide(color: Colors.green, width: 20))),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15))),
               ),
-              clipper: ShapeBorderClipper(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15))),
             );
           },
         ),
