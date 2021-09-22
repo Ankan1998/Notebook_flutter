@@ -18,7 +18,7 @@ class _NoteListState extends State<NoteList> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Center(child: Text('Notie', style: MyTheme.kAppTitle)),
-        toolbarHeight: 70,
+        toolbarHeight: 60,
 
       ),
       body: Padding(
@@ -26,7 +26,8 @@ class _NoteListState extends State<NoteList> {
           left: 15.0,
           top: 25,
           right: 15,
-          bottom: 15
+          
+          
         ),
         child: ListView.separated(
           separatorBuilder: (BuildContext context, int index) {
@@ -58,7 +59,7 @@ class _NoteListState extends State<NoteList> {
                             onPressed: () {}, 
                             icon: Icon(
                               Icons.edit,
-                              color: Color(0xff6962BA),
+                              color: Color(0xff211B5F),
                               size: 30,
                             )
                           ),
@@ -78,6 +79,46 @@ class _NoteListState extends State<NoteList> {
               ),
             );
           },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xffB8D1CD),
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                onPressed: () {}, 
+                icon: Icon(
+                  Icons.delete_sweep,
+                  color: Color(0xffBA6262),
+                  size: 40,
+                )
+              ),
+            ],
+          ),
+        )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        
+        height:65.0,
+        width:65.0,
+        child: FittedBox(
+          child: FloatingActionButton(
+            backgroundColor: Color(0xff6962BA),
+            elevation: 3,
+            child: Icon(
+              Icons.add,
+              size: 42,
+            ),
+            onPressed: (){
+        
+            },
+            tooltip: 'Add Note',
+          ),
         ),
       ),
     );
