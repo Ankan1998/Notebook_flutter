@@ -81,29 +81,9 @@ class _NoteListState extends State<NoteList> {
           },
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xffB8D1CD),
-        elevation: 10,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () {}, 
-                icon: Icon(
-                  Icons.delete_sweep,
-                  color: Color(0xffBA6262),
-                  size: 40,
-                )
-              ),
-            ],
-          ),
-        )
-      ),
+      bottomNavigationBar: bottombar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        
+      floatingActionButton: Container(       
         height:65.0,
         width:65.0,
         child: FittedBox(
@@ -122,5 +102,28 @@ class _NoteListState extends State<NoteList> {
         ),
       ),
     );
+  }
+
+  BottomAppBar bottombar(){
+    return BottomAppBar(
+    color: Color(0xffB8B9D1),
+    elevation: 10,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton(
+            onPressed: () {}, 
+            icon: Icon(
+              Icons.delete_sweep,
+              color: Color(0xffBA6262),
+              size: 40,
+            )
+          ),
+        ],
+      ),
+    )
+  );
   }
 }
