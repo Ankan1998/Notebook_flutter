@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutternote/screens/add_note_screen.dart';
 import 'package:flutternote/themes.dart';
 
 
@@ -95,7 +96,10 @@ class _NoteListState extends State<NoteList> {
               size: 42,
             ),
             onPressed: (){
-        
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddNote(barTitle: 'Add Note',)),
+              );
             },
             tooltip: 'Add Note',
           ),
