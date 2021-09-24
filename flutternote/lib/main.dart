@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutternote/models/note.dart';
 //import 'package:flutternote/screens/note_detail.dart';
 import 'package:flutternote/screens/splash_screen.dart';
 import 'package:flutternote/themes.dart';
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> {
     final appDocumentDirectory =
         await path_provider.getApplicationDocumentsDirectory();
     Hive.init(appDocumentDirectory.path);
+    Hive.registerAdapter(NoteAdapter());
     final notebox = await Hive.openBox('notes');
   }
 
