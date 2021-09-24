@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/add_note_screen.dart';
 import 'package:flutternote/themes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -13,7 +14,14 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-  
+  Box noteBox;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    noteBox = Hive.box('notes');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +37,9 @@ class _NoteListState extends State<NoteList> {
           top: 25,
           right: 15,
         ),
-        child: WatchBoxBuilder(
-            box: Hive.box('notes'),
-            builder: (context, notesbox) {
+        child: ValueListenableBuilder(
+            valueListenable: noteBox.listenable(),
+            builder: (context, notesbox, _) {
               return ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: 10.0);
