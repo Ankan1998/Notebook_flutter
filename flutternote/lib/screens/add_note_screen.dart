@@ -1,65 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutternote/models/note.dart';
 
 import 'package:flutternote/screens/add_note_screen.dart';
 import 'package:flutternote/themes.dart';
 import 'package:flutternote/utils/database_helper.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class AddNote extends StatefulWidget {
   //const NoteDetail(String title, {Key? key}) : super(key: key);
   final String barTitle;
-
+  // Note note;
   const AddNote({Key key, this.barTitle}) : super(key: key);
   // final Note note;
-  
 
   @override
   _AddNoteState createState() => _AddNoteState();
 }
 
 class _AddNoteState extends State<AddNote> {
+  Note note_;
   static var _priorities = ['Urgent', 'Medium', 'Casual'];
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   String barTitle;
-  // Note note;
 
-  
   // DatabaseHelper helper = DatabaseHelper();
 
   void moveToMainScreen() {
     Navigator.pop(context, true);
-  }
-
-  // void updateIntPriority(String value) {
-  //   switch (value) {
-  //     case 'Urgent':
-  //       note.priority = 1;
-  //       break;
-  //     case 'Medium':
-  //       note.priority = 2;
-  //       break;
-  //     case 'Casual':
-  //       note.priority = 3;
-  //       break;
-  //   }
-  // }
-
-  String updateStringPriority(int value) {
-    String priority;
-    switch (value) {
-      case 1:
-        priority = _priorities[0];
-        break;
-      case 2:
-        priority = _priorities[1];
-        break;
-      case 3:
-        priority = _priorities[2];
-        break;
-    }
-    return priority;
   }
 
   // void updateTitle() {
@@ -70,49 +40,96 @@ class _AddNoteState extends State<AddNote> {
   //   note.description = descriptionController.text;
   // }
 
-  // void _save() async {
-  //   moveToMainScreen();
-  //   note.date = DateFormat.yMMMd().format(DateTime.now());
+  void _save(Note notex) {
+    final notebox = Hive.box('notes');
+    notebox.add(notex);
+    // widget.note.date = DateFormat.yMMMd().format(DateTime.now());
 
-  //   int result;
-  //   if (note.id != null) {
-  //     result = await helper.updateNote(note);
-  //   } else {
-  //     result = await helper.insertNote(note);
-  //   }
-
-  //   if (result != 0) {
-  //     _showAlert('Status', 'Note Saved Successfully');
-  //   } else {
-  //     _showAlert('Status', 'Issue raised while saving Note');
-  //   }
-  // }
+    moveToMainScreen();
+  }
 
   void _showAlert(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
-      content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  // void _delete() async {
-  //   moveToMainScreen();
-  //   if (note.id == null) {
-  //     _showAlert('Status', 'No Note deleted');
-  //     return;
-  //   }
-  //   int result = await helper.deleteNote(note.id);
-  //   if (result != 0) {
-  //     _showAlert('Status', 'Note Deleted Successfully');
-  //   } else {
-  //     _showAlert('Status', 'Issue raised while Deleting Note');
-  //   }
-  // }
+  void _delete() async {
+    moveToMainScreen();
+  }
+
+  Widget _buildtitle() {
+    return TextField(
+      autofocus: false,
+      controller: titleController,
+      decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          labelText: 'Title',
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(40.0))),
+    );
+  }
+
+  Widget _builddescription() {
+    return TextField(
+      keyboardType: TextInputType.multiline,
+      minLines: 15,
+      maxLines: null,
+      controller: descriptionController,
+      decoration: InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          labelText: 'Description',
+          alignLabelWithHint: true,
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(40.0))),
+    );
+  }
+
+  Widget _savebutton() {
+    return Expanded(
+      child: FloatingActionButton.extended(
+        heroTag: "btn1",
+        onPressed: () {
+          note_ = Note(
+              1, titleController.text, 'abc', 2, descriptionController.text);
+          print(note_.title);
+          _save(note_);
+          // moveToMainScreen();
+        },
+        tooltip: 'Save Note',
+        icon: Icon(
+          Icons.save,
+        ),
+        backgroundColor: Colors.lightGreen[600].withOpacity(0.7),
+        foregroundColor: Colors.white,
+        label: Text('Save'),
+      ),
+    );
+  }
+
+  Widget _deletebutton() {
+    return Expanded(
+      child: FloatingActionButton.extended(
+        heroTag: "btn2",
+        onPressed: () {
+          moveToMainScreen();
+        },
+        tooltip: 'Delete',
+        icon: Icon(
+          Icons.delete_forever,
+        ),
+        backgroundColor: Colors.red[200].withOpacity(0.9),
+        foregroundColor: Colors.white,
+        label: Text('Delete'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline5;
     // titleController.text = note.title;
     // descriptionController.text = note.description;
     return Scaffold(
@@ -147,103 +164,28 @@ class _AddNoteState extends State<AddNote> {
             //   ),
             // ),
             // Second Element
-            SizedBox(height:10),
+            SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                
-                autofocus: false,
-                controller: titleController,
-                style: textStyle,
-                onChanged: (value) {
-                  //debugPrint("Something title text field");
-                  // updateTitle();
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: 'Title',
-                  labelStyle: textStyle,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0))),
-              ),
+              child: _buildtitle(),
             ),
-            SizedBox(height:10),
+            SizedBox(height: 10),
             // Third element
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                
-                keyboardType: TextInputType.multiline,
-                minLines: 10,
-                maxLines: null,
-                controller: descriptionController,
-                style: textStyle,
-                onChanged: (value) {
-                  //debugPrint("Something title text field");
-                  // updateDescription();
-                },
-                decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: 'Description',
-                  labelStyle: textStyle,
-                  alignLabelWithHint: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(40.0))),
-              ),
+              child: _builddescription(),
             ),
             // Fourth element
             Padding(
                 padding: EdgeInsets.only(
-                  top: 15.0,
-                  bottom: 15.0,
-                  left:25,
-                  right:25
-                ),
+                    top: 15.0, bottom: 15.0, left: 25, right: 25),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      child: FloatingActionButton.extended(
-                        heroTag: "btn1",
-                        onPressed: () {
-                          //moveToMainScreen();
-                          // setState(() {
-                          //   debugPrint('Save clicked');
-                          //   _save();
-                          // });
-                        },
-                        tooltip: 'Save Note',
-                        icon: Icon(
-                          Icons.save,
-                        ),
-                        backgroundColor: Colors.grey,
-                        foregroundColor: Colors.white,
-                        label: Text('Save'),
-                      ),
-                    ),
+                    _savebutton(),
                     Container(
                       width: 75.0,
                     ),
-                    Expanded(
-                      child: FloatingActionButton.extended(
-                        heroTag: "btn2",
-                        onPressed: () {
-                          //moveToMainScreen();
-                          // setState(() {
-                          //   debugPrint('delete clicked');
-                          //   _delete();
-                          // });
-                        },
-                        tooltip: 'Delete',
-                        icon: Icon(
-                          Icons.delete_forever,
-                        ),
-                        backgroundColor: Colors.grey,
-                        foregroundColor: Colors.white,
-                        label: Text('Delete'),
-                      ),
-                    )
+                    _deletebutton()
                   ],
                 ))
           ],
