@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
 import 'package:flutternote/screens/add_note_screen.dart';
+import 'package:flutternote/screens/note_detail.dart';
 import 'package:flutternote/themes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -62,19 +63,29 @@ class _NoteListState extends State<NoteList> {
                     child: ClipPath(
                       child: Container(
                         child: Center(
-                          child: ListTile(
-                            title: Text(notexi.title),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Color(0xff211B5F),
-                                      size: 30,
-                                    )),
-                              ],
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        NoteDetail(notedetail:notexi)),
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(notexi.title),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Color(0xff211B5F),
+                                        size: 30,
+                                      )),
+                                ],
+                              ),
                             ),
                           ),
                         ),
