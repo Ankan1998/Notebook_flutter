@@ -98,7 +98,7 @@ class _NoteListState extends State<NoteList> {
             },
             child: ListTile(
               title: Text(notexi.title),
-              
+              subtitle: Text(notexi.date),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
