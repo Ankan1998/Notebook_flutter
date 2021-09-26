@@ -26,7 +26,7 @@ class _AddNoteState extends State<AddNote> {
   TextEditingController descriptionController = TextEditingController();
   String barTitle;
 
-  // DatabaseHelper helper = DatabaseHelper();
+
 
   void moveToMainScreen() {
     Navigator.pop(context, true);
@@ -42,18 +42,14 @@ class _AddNoteState extends State<AddNote> {
 
   void _save(Note notex) {
     final notebox = Hive.box('notes');
+    notex.date = DateFormat.yMMMd().format(DateTime.now());
     notebox.add(notex);
     // widget.note.date = DateFormat.yMMMd().format(DateTime.now());
 
     moveToMainScreen();
   }
 
-  void _showAlert(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-    );
-    showDialog(context: context, builder: (_) => alertDialog);
-  }
+
 
   void _delete() async {
     moveToMainScreen();
@@ -94,7 +90,7 @@ class _AddNoteState extends State<AddNote> {
         heroTag: "btn1",
         onPressed: () {
           note_ = Note(
-              1, titleController.text, 'abc', 2, descriptionController.text);
+              1, titleController.text, '', 2, descriptionController.text);
           print(note_.title);
           _save(note_);
           // moveToMainScreen();
@@ -110,20 +106,20 @@ class _AddNoteState extends State<AddNote> {
     );
   }
 
-  Widget _deletebutton() {
+  Widget _cancelbutton() {
     return Expanded(
       child: FloatingActionButton.extended(
         heroTag: "btn2",
         onPressed: () {
           moveToMainScreen();
         },
-        tooltip: 'Delete',
+        tooltip: 'Cancel',
         icon: Icon(
-          Icons.delete_forever,
+          Icons.cancel,
         ),
         backgroundColor: Colors.red[200].withOpacity(0.9),
         foregroundColor: Colors.white,
-        label: Text('Delete'),
+        label: Text('Cancel'),
       ),
     );
   }
@@ -185,9 +181,10 @@ class _AddNoteState extends State<AddNote> {
                     Container(
                       width: 75.0,
                     ),
-                    _deletebutton()
+                    _cancelbutton()
                   ],
-                ))
+                )
+                )
           ],
         ),
       ),
