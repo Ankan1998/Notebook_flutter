@@ -23,6 +23,13 @@ class _NoteListState extends State<NoteList> {
     noteBox = Hive.box('notes');
   }
 
+  void _showAlert(String title) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,9 +56,13 @@ class _NoteListState extends State<NoteList> {
                 itemBuilder: (context, index) {
                   final notexi = notesbox.getAt(index);
                   return Dismissible(
-                    key: UniqueKey(),
+                    key: ValueKey(index),
                     onDismissed: (DismissDirection direction) {
-                      setState(() {});
+                      setState(() {
+                        _showAlert("${notexi.title} is deleted");
+                        notesbox.deleteAt(index);
+                        
+                      });
                     },
                     background: SizedBox(height: 0),
                     secondaryBackground: Container(
@@ -60,46 +71,7 @@ class _NoteListState extends State<NoteList> {
                       ),
                       color: Colors.red[300].withOpacity(0.7),
                     ),
-                    child: ClipPath(
-                      child: Container(
-                        child: Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        NoteDetail(notedetail:notexi)),
-                              );
-                            },
-                            child: ListTile(
-                              title: Text(notexi.title),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: Color(0xff211B5F),
-                                        size: 30,
-                                      )),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        height: 80,
-                        decoration: BoxDecoration(
-                            color: Color(0x40262502),
-                            border: Border(
-                                left: BorderSide(
-                                    color: Colors.green, width: 20))),
-                      ),
-                      clipper: ShapeBorderClipper(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                    ),
+                    child: notelist(notexi),
                   );
                 },
               );
@@ -107,28 +79,74 @@ class _NoteListState extends State<NoteList> {
       ),
       bottomNavigationBar: bottombar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Container(
-        height: 65.0,
-        width: 65.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-            backgroundColor: Color(0xff6962BA),
-            elevation: 3,
-            child: Icon(
-              Icons.add,
-              size: 42,
-            ),
-            onPressed: () {
+      floatingActionButton: addnotebutton(),
+    );
+  }
+
+  Widget notelist(var notexi) {
+    return ClipPath(
+      child: Container(
+        child: Center(
+          child: GestureDetector(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddNote(
-                          barTitle: 'Add Note',
-                        )),
+                    builder: (BuildContext context) =>
+                        NoteDetail(notedetail: notexi)),
               );
             },
-            tooltip: 'Add Note',
+            child: ListTile(
+              title: Text(notexi.title),
+              subtitle: Text(notexi.date),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.edit,
+                        color: Color(0xff211B5F),
+                        size: 30,
+                      )),
+                ],
+              ),
+            ),
           ),
+        ),
+        height: 80,
+        decoration: BoxDecoration(
+            color: Color(0x40262502),
+            border: Border(left: BorderSide(color: Colors.green, width: 20))),
+      ),
+      clipper: ShapeBorderClipper(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
+    );
+  }
+
+  Widget addnotebutton() {
+    return Container(
+      height: 65.0,
+      width: 65.0,
+      child: FittedBox(
+        child: FloatingActionButton(
+          backgroundColor: Color(0xff6962BA),
+          elevation: 3,
+          child: Icon(
+            Icons.add,
+            size: 42,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddNote(
+                        barTitle: 'Add Note',
+                      )),
+            );
+          },
+          tooltip: 'Add Note',
         ),
       ),
     );
