@@ -23,6 +23,13 @@ class _NoteListState extends State<NoteList> {
     noteBox = Hive.box('notes');
   }
 
+  void _showAlert(String title) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +59,9 @@ class _NoteListState extends State<NoteList> {
                     key: ValueKey(index),
                     onDismissed: (DismissDirection direction) {
                       setState(() {
+                        _showAlert("${notexi.title} is deleted");
                         notesbox.deleteAt(index);
+                        
                       });
                     },
                     background: SizedBox(height: 0),
@@ -89,6 +98,7 @@ class _NoteListState extends State<NoteList> {
             },
             child: ListTile(
               title: Text(notexi.title),
+              
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
