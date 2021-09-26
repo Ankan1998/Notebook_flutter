@@ -52,7 +52,7 @@ class _NoteListState extends State<NoteList> {
                     key: ValueKey(index),
                     onDismissed: (DismissDirection direction) {
                       setState(() {
-                        
+                        notesbox.deleteAt(index);
                       });
                     },
                     background: SizedBox(height: 0),
