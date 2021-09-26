@@ -30,6 +30,23 @@ class _NoteListState extends State<NoteList> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
+  Color getPriorityColor(int priority) {
+    switch (priority) {
+      case 0:
+        return Color(0x99DCDF3B);
+        break;
+      case 1:
+        return Color(0x9952DF3B);
+        break;
+      case 2:
+        return Color(0x99DF3B3B);
+        break;
+
+      default:
+        return Color(0x9952DF3B);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +78,6 @@ class _NoteListState extends State<NoteList> {
                       setState(() {
                         _showAlert("${notexi.title} is deleted");
                         notesbox.deleteAt(index);
-                        
                       });
                     },
                     background: SizedBox(height: 0),
@@ -117,7 +133,7 @@ class _NoteListState extends State<NoteList> {
         height: 80,
         decoration: BoxDecoration(
             color: Color(0x40262502),
-            border: Border(left: BorderSide(color: Colors.green, width: 20))),
+            border: Border(left: BorderSide(color: getPriorityColor(notexi.priority), width: 20))),
       ),
       clipper: ShapeBorderClipper(
           shape:
@@ -145,6 +161,7 @@ class _NoteListState extends State<NoteList> {
                         barTitle: 'Add Note',
                       )),
             );
+            
           },
           tooltip: 'Add Note',
         ),
