@@ -8,7 +8,7 @@ class MyTheme {
 
 
   static final TextStyle kAppTitle = TextStyle(
-    color: Color(0xff566FA1),
+    color: Colors.white,//Color(0xff566FA1),
     fontSize: 32,
     fontWeight: FontWeight.w400,
     fontFamily: GoogleFonts.oxygenMono().fontFamily

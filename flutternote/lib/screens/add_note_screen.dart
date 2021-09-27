@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
-
-import 'package:flutternote/screens/add_note_screen.dart';
 import 'package:flutternote/themes.dart';
-import 'package:flutternote/utils/database_helper.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
@@ -21,37 +18,20 @@ class AddNote extends StatefulWidget {
 
 class _AddNoteState extends State<AddNote> {
   Note note_;
-  static var _priorities = ['Urgent', 'Medium', 'Casual'];
+  static var _priorities = ['Casual', 'Medium', 'Important'];
+  String _chosenValue=_priorities[0];
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  String barTitle;
-
 
 
   void moveToMainScreen() {
     Navigator.pop(context, true);
   }
 
-  // void updateTitle() {
-  //   note.title = titleController.text;
-  // }
-
-  // void updateDescription() {
-  //   note.description = descriptionController.text;
-  // }
-
   void _save(Note notex) {
     final notebox = Hive.box('notes');
-    notex.date = DateFormat.yMMMd().format(DateTime.now());
     notebox.add(notex);
-    // widget.note.date = DateFormat.yMMMd().format(DateTime.now());
 
-    moveToMainScreen();
-  }
-
-
-
-  void _delete() async {
     moveToMainScreen();
   }
 
@@ -84,14 +64,55 @@ class _AddNoteState extends State<AddNote> {
     );
   }
 
+  Widget dropdown() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top:5,
+        left:20,
+        right:200
+      ),
+      child: Container(               
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(3)),
+          color: Color(0xFFF2F2F2)
+        ),
+        child: ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButton(
+            isExpanded: true,               
+            value: _chosenValue,
+            items: _priorities.map((String dropDownStringItem) {
+              return DropdownMenuItem<String>(
+                
+                child: Text(dropDownStringItem),
+                value: dropDownStringItem,
+              );
+            }).toList(),
+        
+            onChanged: (value) {
+              setState(() {
+                _chosenValue = value;
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _savebutton() {
     return Expanded(
       child: FloatingActionButton.extended(
         heroTag: "btn1",
         onPressed: () {
+          var color_code = {'Casual': 0, 'Medium': 1, 'Important': 2};
           note_ = Note(
-              1, titleController.text, '', 2, descriptionController.text);
-          print(note_.title);
+              1,
+              titleController.text,
+              DateFormat.yMMMd().format(DateTime.now()),
+              color_code[_chosenValue],
+              descriptionController.text);
+          
           _save(note_);
           // moveToMainScreen();
         },
@@ -141,31 +162,14 @@ class _AddNoteState extends State<AddNote> {
         padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
         child: ListView(
           children: [
-            // ListTile(
-            //   title: DropdownButton(
-            //     items: _priorities.map((String dropDownStringItem) {
-            //       return DropdownMenuItem<String>(
-            //         child: Text(dropDownStringItem),
-            //         value: updateStringPriority(1),
-            //       );
-            //     }).toList(),
-            //     style: textStyle,
-            //     value: 'Casual',
-            //     onChanged: (value) {
-            //       // setState(() {
-            //       //   debugPrint('user ${value}');
-            //       //   updateIntPriority(value);
-            //       // });
-            //     },
-            //   ),
-            // ),
+            dropdown(),
             // Second Element
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: _buildtitle(),
             ),
-            SizedBox(height: 10),
+            
             // Third element
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -174,7 +178,7 @@ class _AddNoteState extends State<AddNote> {
             // Fourth element
             Padding(
                 padding: EdgeInsets.only(
-                    top: 15.0, bottom: 15.0, left: 25, right: 25),
+                    top: 10.0, bottom: 10.0, left: 25, right: 25),
                 child: Row(
                   children: <Widget>[
                     _savebutton(),
@@ -183,8 +187,7 @@ class _AddNoteState extends State<AddNote> {
                     ),
                     _cancelbutton()
                   ],
-                )
-                )
+                ))
           ],
         ),
       ),

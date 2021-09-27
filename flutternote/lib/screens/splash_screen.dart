@@ -17,7 +17,7 @@ class _SplashScreenxState extends State<SplashScreenx> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 3),
+        Duration(seconds: 5),
         () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -31,19 +31,22 @@ class _SplashScreenxState extends State<SplashScreenx> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text("IMAGE")
-            // child: ClipOval(
-            //   child: Image.asset(
-            //     "images/git1.png",
-            //     height: 200,
-            //     width: 200,
-            //   ),
-            // ),
+            // child: Text("IMAGE")
+            child: Image.asset(
+              "images/note1.png",
+              height: 200,
+              width: 200,
+            ),
           ),
           SizedBox(height:50.0),
           Text(
-            'API',
-            style: MyTheme.kAppTitle
+            'NOTIE',
+            style: TextStyle(
+              color: Color(0xff6962BA),
+              fontSize: 34,
+              fontWeight: FontWeight.w700,
+              fontFamily: GoogleFonts.oxygenMono().fontFamily
+            )
           )
         ],
       )
