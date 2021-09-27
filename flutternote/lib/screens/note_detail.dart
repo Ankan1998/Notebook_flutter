@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutternote/models/note.dart';
 import 'package:flutternote/themes.dart';
 
 class NoteDetail extends StatefulWidget {

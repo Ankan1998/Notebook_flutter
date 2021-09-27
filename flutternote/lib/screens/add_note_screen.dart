@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
-
-import 'package:flutternote/screens/add_note_screen.dart';
 import 'package:flutternote/themes.dart';
-import 'package:flutternote/utils/database_helper.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 

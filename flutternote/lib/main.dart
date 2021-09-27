@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutternote/models/note.dart';
-import 'package:flutternote/screens/note_detail.dart';
 import 'package:flutternote/screens/splash_screen.dart';
 import 'package:flutternote/themes.dart';
 import 'package:hive/hive.dart';
