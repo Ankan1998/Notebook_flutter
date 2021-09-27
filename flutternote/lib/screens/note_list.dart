@@ -9,7 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class NoteList extends StatefulWidget {
   //const NoteList({ Key? key }) : super(key: key);
-
+  
   @override
   _NoteListState createState() => _NoteListState();
 }
@@ -20,7 +20,12 @@ class _NoteListState extends State<NoteList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    noteBox = Hive.box('notes');
+  }
+
+  Future hivebox() async {
+    noteBox = await Hive.openBox('notes');
+    // print(widget.noteBox);
+    return noteBox;
   }
 
   void _showAlert(String title) {
@@ -49,6 +54,8 @@ class _NoteListState extends State<NoteList> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.noteBox);
+
     return Scaffold(
       backgroundColor: MyTheme.backgroundColor,
       appBar: AppBar(
@@ -57,42 +64,59 @@ class _NoteListState extends State<NoteList> {
         toolbarHeight: 60,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          left: 15.0,
-          top: 25,
-          right: 15,
-        ),
-        child: ValueListenableBuilder(
-            valueListenable: noteBox.listenable(),
-            builder: (context, notesbox, _) {
-              return ListView.separated(
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(height: 10.0);
-                },
-                itemCount: notesbox.length,
-                itemBuilder: (context, index) {
-                  final notexi = notesbox.getAt(index);
-                  return Dismissible(
-                    key: ValueKey(index),
-                    onDismissed: (DismissDirection direction) {
-                      setState(() {
-                        _showAlert("${notexi.title} is deleted");
-                        notesbox.deleteAt(index);
-                      });
-                    },
-                    background: SizedBox(height: 0),
-                    secondaryBackground: Container(
-                      child: Center(
-                        child: Text("Delete"),
-                      ),
-                      color: Colors.red[300].withOpacity(0.7),
-                    ),
-                    child: notelist(notexi),
-                  );
-                },
-              );
-            }),
-      ),
+          padding: const EdgeInsets.only(
+            left: 15.0,
+            top: 25,
+            right: 15,
+          ),
+          child: FutureBuilder(
+              future: hivebox(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ValueListenableBuilder(
+                    valueListenable: noteBox.listenable(),
+                    builder: (context, notesbox, _) {
+                      return ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(height: 10.0);
+                        },
+                        itemCount: notesbox.length,
+                        itemBuilder: (context, index) {
+                          final notexi = notesbox.getAt(index);
+                          return Dismissible(
+                            key: UniqueKey(),
+                            onDismissed: (DismissDirection direction) {
+                              setState(() {
+                                _showAlert("${notexi.title} is deleted");
+                                notesbox.deleteAt(index);
+                              });
+                            },
+                            background: SizedBox(height: 0),
+                            secondaryBackground: Container(
+                              child: Center(
+                                child: Text("Delete"),
+                              ),
+                              color: Colors.red[300].withOpacity(0.7),
+                            ),
+                            child: notelist(notexi),
+                          );
+                        },
+                      );
+                    });
+                }
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 30),
+                      Text("Loading Please Wait...",
+                          style: TextStyle(
+                              color: Colors.grey[700], fontSize: 24))
+                    ],
+                  ),
+                );
+              })),
       bottomNavigationBar: bottombar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: addnotebutton(),
@@ -133,7 +157,9 @@ class _NoteListState extends State<NoteList> {
         height: 80,
         decoration: BoxDecoration(
             color: Color(0x40262502),
-            border: Border(left: BorderSide(color: getPriorityColor(notexi.priority), width: 20))),
+            border: Border(
+                left: BorderSide(
+                    color: getPriorityColor(notexi.priority), width: 20))),
       ),
       clipper: ShapeBorderClipper(
           shape:
@@ -161,7 +187,6 @@ class _NoteListState extends State<NoteList> {
                         barTitle: 'Add Note',
                       )),
             );
-            
           },
           tooltip: 'Add Note',
         ),
@@ -190,3 +215,4 @@ class _NoteListState extends State<NoteList> {
         ));
   }
 }
+
