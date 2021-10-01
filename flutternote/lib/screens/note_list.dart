@@ -99,7 +99,6 @@ class _NoteListState extends State<NoteList> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.noteBox);
 
     return Scaffold(
       backgroundColor: MyTheme.backgroundColor,
@@ -182,8 +181,14 @@ class _NoteListState extends State<NoteList> {
               );
             },
             child: ListTile(
-              title: Text(notexi.title),
-              subtitle: Text(notexi.date),
+              title: Text(
+                notexi.title,
+                style: MyTheme.paragraph,
+              ),
+              subtitle: Text(
+                notexi.date,
+                style: MyTheme.subtitle
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [

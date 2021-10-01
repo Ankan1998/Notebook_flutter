@@ -22,8 +22,15 @@ class MyTheme {
 
 
   static final TextStyle paragraph = TextStyle(
-    color: Color(0xffDBEDC5),
-    fontFamily: GoogleFonts.rosarivo(fontSize: 22).fontFamily
+    color: Color(0xff0E2850),
+    fontSize: 20,
+    fontFamily: GoogleFonts.rosarivo().fontFamily
+  );
+
+  static final TextStyle subtitle = TextStyle(
+    color: Colors.grey[700],
+    fontSize: 16,
+    fontFamily: GoogleFonts.roboto().fontFamily
   );
 
 
