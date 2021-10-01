@@ -6,11 +6,12 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class AddNote extends StatefulWidget {
-  //const NoteDetail(String title, {Key? key}) : super(key: key);
   final String barTitle;
-  // Note note;
-  const AddNote({Key key, this.barTitle}) : super(key: key);
-  // final Note note;
+  final Note notex;
+  final int nindex;
+
+  const AddNote({Key key, this.barTitle, this.notex, this.nindex})
+      : super(key: key);
 
   @override
   _AddNoteState createState() => _AddNoteState();
@@ -19,10 +20,10 @@ class AddNote extends StatefulWidget {
 class _AddNoteState extends State<AddNote> {
   Note note_;
   static var _priorities = ['Casual', 'Medium', 'Important'];
-  String _chosenValue=_priorities[0];
+
+  String _chosenValue = _priorities[0];
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
 
   void moveToMainScreen() {
     Navigator.pop(context, true);
@@ -31,6 +32,13 @@ class _AddNoteState extends State<AddNote> {
   void _save(Note notex) {
     final notebox = Hive.box('notes');
     notebox.add(notex);
+
+    moveToMainScreen();
+  }
+
+  void _update(Note notex, int index) {
+    final notebox = Hive.box('notes');
+    notebox.putAt(index, notex);
 
     moveToMainScreen();
   }
@@ -55,23 +63,18 @@ class _AddNoteState extends State<AddNote> {
       maxLines: null,
       controller: descriptionController,
       decoration: InputDecoration(
-          fillColor: Colors.white,
-          filled: true,
-          labelText: 'Description',
-          alignLabelWithHint: true,
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(40.0))),
+        fillColor: Colors.white,
+        filled: true,
+        labelText: 'Description',
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(40.0))),
     );
   }
 
   Widget dropdown() {
     return Padding(
-      padding: const EdgeInsets.only(
-        top:5,
-        left:20,
-        right:200
-      ),
-      child: Container(               
+      padding: const EdgeInsets.only(top: 5, left: 20, right: 200),
+      child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(3)),
           color: Color(0xFFF2F2F2)
@@ -79,16 +82,14 @@ class _AddNoteState extends State<AddNote> {
         child: ButtonTheme(
           alignedDropdown: true,
           child: DropdownButton(
-            isExpanded: true,               
+            isExpanded: true,
             value: _chosenValue,
             items: _priorities.map((String dropDownStringItem) {
               return DropdownMenuItem<String>(
-                
                 child: Text(dropDownStringItem),
                 value: dropDownStringItem,
               );
             }).toList(),
-        
             onChanged: (value) {
               setState(() {
                 _chosenValue = value;
@@ -112,9 +113,13 @@ class _AddNoteState extends State<AddNote> {
               DateFormat.yMMMd().format(DateTime.now()),
               color_code[_chosenValue],
               descriptionController.text);
+          print(note_.title);
+          if (widget.nindex != null) {
+            _update(note_, widget.nindex);
+          } else{
+            _save(note_);
+          }
           
-          _save(note_);
-          // moveToMainScreen();
         },
         tooltip: 'Save Note',
         icon: Icon(
@@ -147,8 +152,13 @@ class _AddNoteState extends State<AddNote> {
 
   @override
   Widget build(BuildContext context) {
-    // titleController.text = note.title;
-    // descriptionController.text = note.description;
+    if (widget.notex != null) {
+      titleController.text = widget.notex.title;
+      descriptionController.text = widget.notex.description;
+    }
+    // if (widget.notex != null){
+    //   _chosenValue = _priorities[widget.notex.priority];
+    // } 
     return Scaffold(
       backgroundColor: MyTheme.backgroundColor,
       resizeToAvoidBottomInset: true,
@@ -169,7 +179,7 @@ class _AddNoteState extends State<AddNote> {
               padding: const EdgeInsets.all(15.0),
               child: _buildtitle(),
             ),
-            
+
             // Third element
             Padding(
               padding: const EdgeInsets.all(15.0),
