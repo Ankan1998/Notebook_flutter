@@ -63,8 +63,8 @@ class _AddNoteState extends State<AddNote> {
   Widget _builddescription() {
     return TextField(
       keyboardType: TextInputType.multiline,
-      minLines: 12,
-      maxLines: null,
+      minLines: 15,
+      maxLines: 15,
       controller: descriptionController,
       decoration: InputDecoration(
         fillColor: Colors.white,
