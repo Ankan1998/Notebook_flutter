@@ -146,7 +146,7 @@ class _NoteListState extends State<NoteList> {
                                 ),
                                 color: Colors.red[300].withOpacity(0.7),
                               ),
-                              child: notelist(notexi),
+                              child: notelist(notexi,index),
                             );
                           },
                         );
@@ -171,7 +171,7 @@ class _NoteListState extends State<NoteList> {
     );
   }
 
-  Widget notelist(var notexi) {
+  Widget notelist(var notexi,int index) {
     return ClipPath(
       child: Container(
         child: Center(
@@ -191,7 +191,19 @@ class _NoteListState extends State<NoteList> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                              AddNote(
+                                barTitle: "Edit Note",
+                                notex: notexi,
+                                nindex:index
+                              )
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.edit,
                         color: Color(0xff211B5F),
