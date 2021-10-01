@@ -21,10 +21,14 @@ class _AddNoteState extends State<AddNote> {
   Note note_;
   static var _priorities = ['Casual', 'Medium', 'Important'];
 
-  String _chosenValue = _priorities[0];
+  String _chosenValue;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
+  @override
+  void initState() {
+    super.initState();
+    _chosenValue = widget.notex != null ? _priorities[widget.notex.priority] : _priorities[0];
+  }
   void moveToMainScreen() {
     Navigator.pop(context, true);
   }
@@ -156,9 +160,6 @@ class _AddNoteState extends State<AddNote> {
       titleController.text = widget.notex.title;
       descriptionController.text = widget.notex.description;
     }
-    // if (widget.notex != null){
-    //   _chosenValue = _priorities[widget.notex.priority];
-    // } 
     return Scaffold(
       backgroundColor: MyTheme.backgroundColor,
       resizeToAvoidBottomInset: true,
