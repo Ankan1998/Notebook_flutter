@@ -63,7 +63,7 @@ class _AddNoteState extends State<AddNote> {
   Widget _builddescription() {
     return TextField(
       keyboardType: TextInputType.multiline,
-      minLines: 15,
+      minLines: 12,
       maxLines: null,
       controller: descriptionController,
       decoration: InputDecoration(
@@ -177,13 +177,13 @@ class _AddNoteState extends State<AddNote> {
             // Second Element
             SizedBox(height: 5),
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(10.0),
               child: _buildtitle(),
             ),
 
             // Third element
             Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(10.0),
               child: _builddescription(),
             ),
             // Fourth element
