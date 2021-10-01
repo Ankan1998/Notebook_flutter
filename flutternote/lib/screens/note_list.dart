@@ -5,7 +5,6 @@ import 'package:flutternote/themes.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class NoteList extends StatefulWidget {
-  //const NoteList({ Key? key }) : super(key: key);
 
   @override
   _NoteListState createState() => _NoteListState();
@@ -20,7 +19,6 @@ class _NoteListState extends State<NoteList> {
 
   Future hivebox() async {
     noteBox = await Hive.openBox('notes');
-    // print(widget.noteBox);
     return noteBox;
   }
 
@@ -40,7 +38,7 @@ class _NoteListState extends State<NoteList> {
         okButton
       ],
     );
-    // showDialog(context: context, builder: (_) => alertDialog);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {

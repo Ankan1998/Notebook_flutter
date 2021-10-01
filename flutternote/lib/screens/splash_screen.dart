@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 
 class SplashScreenx extends StatefulWidget {
-  // const SplashScreen({ Key? key }) : super(key: key);
 
   @override
   _SplashScreenxState createState() => _SplashScreenxState();
@@ -30,7 +29,6 @@ class _SplashScreenxState extends State<SplashScreenx> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            // child: Text("IMAGE")
             child: Image.asset(
               "images/note1.png",
               height: 200,

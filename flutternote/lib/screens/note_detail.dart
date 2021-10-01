@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutternote/themes.dart';
 
 class NoteDetail extends StatefulWidget {
-  // NoteDetail({Key? key}) : super(key: key);
+  
   final notedetail;
 
   const NoteDetail({Key key, this.notedetail}) : super(key: key);
