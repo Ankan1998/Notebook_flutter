@@ -15,7 +15,6 @@ class _NoteListState extends State<NoteList> {
   Box noteBox;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
