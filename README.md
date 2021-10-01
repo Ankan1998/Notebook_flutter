@@ -1,5 +1,7 @@
 # Notebook_flutter
-This repo is to practice flutter app which requires Database
+This is a note keeping app developed in Flutter. It uses hive (fast no sql database built using Pure dart). 
+This App has add, delete update note features and also can add priority to notes. It also has a option to clear out all note records at one go.
+Its is fast, lightweight and works offline without hassle of network connection.
 
 <h2>Screenshot of Notie App</h2>
 
@@ -8,4 +10,7 @@ This repo is to practice flutter app which requires Database
 <img align="left" src="https://user-images.githubusercontent.com/36896102/135655265-5491bd36-6f3d-4fa8-af04-b4f643cd36c6.PNG" height="300" width="200"/>
 <img align="left" src="https://user-images.githubusercontent.com/36896102/135655256-0cd2c7e0-4fba-4628-bbf3-309f7f197d57.PNG" height="300" width="200"/>
 
+### *APK*
+#### *Download*
+[V1 - DOWNLOAD](https://drive.google.com/file/d/1-gwBobOlZ9vktovmWKorqWHd_tDclRx0/view?usp=sharing)
 
